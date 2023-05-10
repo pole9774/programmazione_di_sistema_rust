@@ -2,6 +2,7 @@ use std::fs::File;
 use std::io::Read;
 use std::fmt::Display;
 use std::fmt::Formatter;
+use std::convert::TryFrom;
 
 #[derive(Debug, Clone, Copy)]
 struct ValueStruct {
@@ -40,10 +41,13 @@ fn main() {
     for i in 0..num_structs {
         let start_type = i * std::mem::size_of::<ValueStruct>();
 
-        let tmp_type = i32::from_le_bytes([buffer[start_type], buffer[start_type+1], buffer[start_type+2], buffer[start_type+3]]);
-        let tmp_val = f32::from_le_bytes([buffer[start_type+4], buffer[start_type+5], buffer[start_type+6], buffer[start_type+7]]);
-        let tmp_timestamp = i64::from_le_bytes([buffer[start_type+8], buffer[start_type+9], buffer[start_type+10], buffer[start_type+11],
-                                                buffer[start_type+12], buffer[start_type+13], buffer[start_type+14], buffer[start_type+15]]);
+        //let tmp_type = i32::from_le_bytes([buffer[start_type], buffer[start_type+1], buffer[start_type+2], buffer[start_type+3]]);
+        let tmp_type = i32::from_le_bytes(TryFrom::try_from(buffer.get(start_type..=start_type+3).expect("Invalid Range")).unwrap());
+        //let tmp_val = f32::from_le_bytes([buffer[start_type+4], buffer[start_type+5], buffer[start_type+6], buffer[start_type+7]]);
+        let tmp_val = f32::from_le_bytes(TryFrom::try_from(buffer.get(start_type+4..=start_type+7).expect("Invalid Range")).unwrap());
+        /*let tmp_timestamp = i64::from_le_bytes([buffer[start_type+8], buffer[start_type+9], buffer[start_type+10], buffer[start_type+11],
+                                                buffer[start_type+12], buffer[start_type+13], buffer[start_type+14], buffer[start_type+15]]);*/
+        let tmp_timestamp = i64::from_le_bytes(TryFrom::try_from(buffer.get(start_type+8..=start_type+15).expect("Invalid Range")).unwrap());
 
         let value = ValueStruct::new(tmp_type, tmp_val, tmp_timestamp);
 
