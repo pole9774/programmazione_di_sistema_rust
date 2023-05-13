@@ -27,3 +27,5 @@ fn main() {
 
     println!("{:?}", annotate(&s1));
 }
+
+// cargo run -- --rows=3 --pcols=3 --minefield="*  *  *  "
