@@ -107,7 +107,6 @@ pub fn is_valid(code: &str) -> bool {
         sum += if idx % 2 == 0 {
             num
         } else if num * 2 > 9 {
-            // TODO provare con un when
             num * 2 - 9
         } else {
             num * 2
