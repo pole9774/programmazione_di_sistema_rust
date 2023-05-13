@@ -79,3 +79,41 @@ pub fn is_valid(code: &str) -> bool {
 
 // cargo test
 // cargo test -- --ignored
+
+
+// alternative:
+/*
+pub fn is_valid(code: &str) -> bool {
+
+    let mut digits = String::new();
+    for c in code.chars() {
+        match c {
+            c if c.is_digit(10) => digits.push(c),
+            ' ' => (),
+            _ => {
+                return false;
+            }
+        }
+    }
+
+    if digits.len() < 2 {
+        return false;
+    }
+
+    let mut sum = 0;
+    for (idx, sdigit) in digits.chars().rev().enumerate() {
+        let num = sdigit.to_digit(10).unwrap();
+
+        sum += if idx % 2 == 0 {
+            num
+        } else if num * 2 > 9 {
+            // TODO provare con un when
+            num * 2 - 9
+        } else {
+            num * 2
+        };
+    }
+
+    sum % 10 == 0
+}
+*/
