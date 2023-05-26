@@ -40,9 +40,10 @@ mod cdl {
 }
 
 fn main() {
-    let c = Arc::new(cdl::Cdl::new(2));
+    let c = Arc::new(cdl::Cdl::new(3));
     let cdl1 = Arc::clone(&c);
     let cdl2 = Arc::clone(&c);
+    let cdl3 = Arc::clone(&c);
 
     let t1 = thread::spawn(move || {
         sleep(Duration::from_secs(2));
@@ -58,8 +59,16 @@ fn main() {
         println!("Thread2 done");
     });
 
+    let t3 = thread::spawn(move || {
+        sleep(Duration::from_secs(2));
+        cdl3.count_down();
+        sleep(Duration::from_secs(5));
+        println!("Thread3 done");
+    });
+
     c.wait();
     println!("Done");
     t1.join().unwrap();
     t2.join().unwrap();
+    t3.join().unwrap();
 }
