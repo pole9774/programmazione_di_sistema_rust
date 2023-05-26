@@ -55,7 +55,7 @@ fn main() {
         sleep(Duration::from_secs(3));
         cdl2.count_down();
         sleep(Duration::from_secs(6));
-        println!("Thread1 done");
+        println!("Thread2 done");
     });
 
     c.wait();
