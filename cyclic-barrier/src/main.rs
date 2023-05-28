@@ -1,4 +1,5 @@
 use std::sync::Arc;
+use std::time::Duration;
 
 use barrier::{cb, cbv};
 use rand;
@@ -28,12 +29,12 @@ fn barrier_example() {
 fn sense() -> u32 {
     let r: f32 = rand::random();
     let t: f32 = rand::random();
-    std::thread::sleep_ms((1000.0 * t).floor() as u32);
+    std::thread::sleep(Duration::from_millis((1000.0 * t).floor() as u64));
     (100.0 * r).floor() as u32
 }
 
 fn writer() {
-    std::thread::sleep_ms(1000);
+    std::thread::sleep(Duration::from_millis(1000));
 } 
 
 fn val_barrier_example() {
@@ -47,7 +48,7 @@ fn val_barrier_example() {
                 loop {
                     //c += 1;
                     let val = sense();
-                    // vbarrier.wait((i, c));
+                    //vbarrier.wait((i, c));
                     vbarrier.wait((i, val));
                 }
             }
